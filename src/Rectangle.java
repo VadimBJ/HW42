@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 public class Rectangle {
   private int length;
   private int width;
