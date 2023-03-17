@@ -11,7 +11,6 @@ public class MainAccounts {
   public static void main(String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    // В нашей программе нужно прочитать два списка пользователей.
     List<Account> list1 = readAccountList(br);
     for (Account account : list1) {
       account.increaseReputation(10);
@@ -21,22 +20,16 @@ public class MainAccounts {
       account.decreaseReputation(10);
     }
 
-    // Мы должны объединить эти два списка в множество
     Set<Account> accounts = new HashSet<>();
-    // Первый список при этом в приоритете - именно из него мы берём баланс в случае разницы.
-    accounts.addAll(list1); // добавить в множество accounts все элементы из списка list1
-    // если элемент повторится (без учёта репутации, см. equals()), то он не будет добавлен
-    accounts.addAll(list2); // добавить в множество accounts все элементы из списка list2
+    accounts.addAll(list1);
+    accounts.addAll(list2);
 
-    // и вывести общее количество уникальных пользователей в этих двух списках
     System.out.println("Найдено всего " + accounts.size() + " уникальных записей:");
     for (Account account : accounts) {
-      // а затем и самих людей
-      System.out.println("- " + account); // account выводится через toString()
+      System.out.println("- " + account);
     }
   }
 
-  // прочитать список учётных записей
   public static List<Account> readAccountList(BufferedReader br) throws IOException {
     System.out.print("Введите количество учётных записей в списке: ");
     int n = Integer.parseInt(br.readLine());
@@ -48,12 +41,18 @@ public class MainAccounts {
     return result;
   }
 
-  // прочитать учётную запись
   public static Account readAccount(BufferedReader br) throws IOException {
-    System.out.print("Введите имя: ");
-    String name = br.readLine();
-    System.out.print("Введите e-mail: ");
-    String email = br.readLine();
-    return new Account(name, email);
+    Account tmpAcc = null;
+    try {
+      System.out.print("Введите имя: ");
+      String name = br.readLine();
+      System.out.print("Введите e-mail: ");
+      String email = br.readLine();
+      tmpAcc = new Account(name, email);
+    } catch (InvalidEmail e) {
+      System.err.println(e.getMessage());
+      System.exit(0);
+    }
+    return tmpAcc;
   }
 }
